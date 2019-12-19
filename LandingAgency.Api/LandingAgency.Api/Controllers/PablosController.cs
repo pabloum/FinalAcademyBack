@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LandingAgency.Api.Logic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,15 +11,28 @@ namespace LandingAgency.Api.Controllers
     public class PablosController : ApiController
     {
         // GET api/values
-        public IEnumerable<string> Get()
+        public IHttpActionResult Get()
         {
-            return new string[] { "Pablo", "Uribe" };
+            var clientBl = new ClientBl();
+
+            return Ok(clientBl.GetAll());
         }
 
         // GET api/values/5
         public string Get(int id)
         {
-            return "This is freaking unbelievable";
+            string message;
+
+            if (id > 29)
+            {
+                message = "Number greater than 29";
+            }
+            else
+            {
+                message = "Number less than 29";
+            }
+
+            return message;
         }
     }
 }

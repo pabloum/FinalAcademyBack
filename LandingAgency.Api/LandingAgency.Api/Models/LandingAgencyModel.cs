@@ -37,6 +37,10 @@ namespace LandingAgency.Api.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Product>()
+                .Property(e => e.Price)
+                .HasPrecision(9, 2);
+
+            modelBuilder.Entity<Product>()
                 .HasMany(e => e.PackageProduct)
                 .WithRequired(e => e.Product)
                 .WillCascadeOnDelete(false);

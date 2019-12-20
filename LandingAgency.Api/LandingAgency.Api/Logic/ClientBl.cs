@@ -8,11 +8,17 @@ namespace LandingAgency.Api.Logic
 {
     public class ClientBl
     {
-        public IList<Client> GetAll() 
+        public IList<ClientType> GetAll() 
         {
             using (var context = new LandingAgencyModel()) {
-                return context.Client.ToList();
+                return context.ClientType.ToList();
             }
+        }
+
+        public string GetClientTypeFromId(int? ClientTypeId)
+        {
+            // TO DO: Implementation
+            return ClientType.CLIENT_COORPORATE;
         }
     }
 }

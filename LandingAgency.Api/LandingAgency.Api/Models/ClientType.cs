@@ -9,6 +9,9 @@ namespace LandingAgency.Api.Models
     [Table("ClientType")]
     public partial class ClientType
     {
+        public const string CLIENT_INDIVIDUAL = "Individual";
+        public const string CLIENT_COORPORATE = "Coorporate";
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ClientType()
         {

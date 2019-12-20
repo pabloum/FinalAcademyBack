@@ -20,6 +20,11 @@ namespace LandingAgency.Api.Models
 
         public int? ProductTypeId { get; set; }
 
+        [Column(TypeName = "numeric")]
+        public decimal? Price { get; set; }
+
+        public int? Category { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PackageProduct> PackageProduct { get; set; }
 

@@ -26,6 +26,17 @@ namespace LandingAgency.Api.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PackageProduct> PackageProduct { get; set; }
 
+        public virtual ICollection<Product> Products{ get; set; }
+
+        public ICollection<Product> GetProducts()
+        {
+            var products = new List<Product>();
+
+
+
+            return products;
+        }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reservation> Reservation { get; set; }
     }

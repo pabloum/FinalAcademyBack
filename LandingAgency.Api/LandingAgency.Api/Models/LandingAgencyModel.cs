@@ -35,6 +35,14 @@ namespace LandingAgency.Api.Models
                 .HasMany(e => e.PackageProduct)
                 .WithRequired(e => e.Package)
                 .WillCascadeOnDelete(false);
+                //.HasMany<Product>(e => e.Products)
+                //.Withmany(e => e.packages)
+                //.map(cs =>
+                //        {
+                //            cs.mapleftkey("packagerefid");
+                //            cs.maprightkey("productrefid");
+                //            cs.totable("packageproduct");
+                //        });
 
             modelBuilder.Entity<Product>()
                 .Property(e => e.Price)

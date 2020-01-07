@@ -6,24 +6,22 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Cors;
 
 namespace LandingAgency.Api.Controllers
 {
-    public class PablosController : ApiController
+    public class ComissionController : ApiController
     {
-        // GET api/pablos
-        [EnableCors("*", "*", "*")]
+        // GET api/comission
+        [HttpGet]
         public IHttpActionResult Get()
         {
+            var reservation = new Reservation();
+            var comissionBl = new ComissionBl();
 
-            var reservationBl = new ReservationBl();
-
-            return Ok(reservationBl.GetAll());
+            return Ok(comissionBl.GetComission(reservation));
         }
 
-        // POST api/pablos
-        //public void Post([FromBody]string value)
+        // POST api/comission
         [HttpPost]
         public void Post([FromBody] Reservation res)
         {
@@ -33,24 +31,10 @@ namespace LandingAgency.Api.Controllers
             reservation.DurationStay = res.DurationStay;
             reservation.AmountTravelers = res.AmountTravelers;
             reservation.Package = res.Package;
-            reservation.Client = res.Client; 
+            reservation.Client = res.Client;
 
             LAM.Reservation.Add(reservation);
             LAM.SaveChanges();
-        }
-
-        // PUT api/pablos/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // GET api/pablos/5
-        public IHttpActionResult Get(int id)
-        {
-            var comissionBl = new ComissionBl();
-            var reservationBl = new ReservationBl();
-
-            return Ok(comissionBl.GetComission(reservationBl.GetReservationById(id)));
         }
     }
 }

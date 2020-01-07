@@ -14,11 +14,11 @@ namespace LandingAgency.Api.Logic
             Client client = reservation.Client;
             Package package = reservation.Package;
 
-            ClientBl clientBl = new ClientBl();
             PackageBl packageBl = new PackageBl();
             ProductBl productBl = new ProductBl();
 
-            string clientType = clientBl.GetClientTypeFromId(client.ClientTypeId);
+            string clientType = client.ClientType.ClientTypeName;
+            
             IList<Product> products = packageBl.GetProducts();
 
             if (clientType == ClientType.CLIENT_COORPORATE)

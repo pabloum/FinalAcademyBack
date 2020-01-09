@@ -28,15 +28,6 @@ namespace LandingAgency.Api.Models
 
         public virtual ICollection<Product> Products{ get; set; }
 
-        public ICollection<Product> GetProducts()
-        {
-            var products = new List<Product>();
-
-
-
-            return products;
-        }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reservation> Reservation { get; set; }
     }

@@ -12,7 +12,7 @@ namespace LandingAgency.Api.Logic
         {
             using (var context = new LandingAgencyModel())
             {
-                return context.Package.ToList();
+                return context.Package.ToList(); ;
             }
         }
 
@@ -35,27 +35,25 @@ namespace LandingAgency.Api.Logic
         {
             using (var context = new LandingAgencyModel())
             {
-                return context.Package.First(c => c.PackageId == id);
+                var package = context.Package.First(c => c.PackageId == id);
+                package.Products = GetProducts(package.PackageId);
+                return package;
             }
-
         }
 
-        public IList<Product> GetProducts()
+        public IList<Product> GetProducts(int packageId)
         {
-
-            // TO DO :::...
             using (var context = new LandingAgencyModel())
             {
-                return context.Product.ToList();
+                return context.PackageProduct.Where(p => p.PackageId == packageId).Select(p => p.Product).ToList();
             }
         }
 
         public decimal GetTotalPackagePrice(Package package)
         {
-            // TO DO :::..
             decimal totalPrice = 0;
 
-            IList<Product> products = GetProducts();
+            IList<Product> products = GetProducts(package.PackageId);
 
             foreach (var product in products)
             {

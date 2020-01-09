@@ -13,12 +13,16 @@ namespace LandingAgency.Api.Models
         public int ReservationId { get; set; }
 
         public int? ClientId { get; set; }
+        
+        public int? ClientTypeId { get; set; }
 
         public int AmountTravelers { get; set; }
 
         public int DurationStay { get; set; }
 
         public int? PackageId { get; set; }
+
+        public int[] TravelPackageIds { get; set; }
 
         public virtual Client Client { get; set; }
 

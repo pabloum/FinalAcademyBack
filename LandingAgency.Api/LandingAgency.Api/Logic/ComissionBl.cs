@@ -8,72 +8,104 @@ namespace LandingAgency.Api.Logic
 {
     public class ComissionBl
     {
-        public decimal GetComission(Reservation reservation)
+        public decimal GetCommisionForIndividual(int amountTravelers, int tripDuration, IList<Product> products)
         {
-            decimal comission = 0;
-            Client client = reservation.Client;
-            Package package = reservation.Package;
-
             PackageBl packageBl = new PackageBl();
             ProductBl productBl = new ProductBl();
 
-            string clientType = client.ClientType.ClientTypeName;
+            decimal commision = 0;
+
+            foreach (var product in products)
+            {
+                string productType = productBl.GetProductTypeFromId(product.ProductTypeId);
+
+                if (productType == ProductType.PRODUCT_HOTEL)
+                {
+                    if (tripDuration < 6)
+                    {
+                        commision += 0.5m * (decimal)product.Price;
+                    }
+                    else
+                    {
+                        commision += (decimal)product.Price;
+                    }
+                }
+                else if (productType == ProductType.PRODUCT_CAR)
+                {
+                    commision += ((decimal)(100 * product.Category) + 0.01m * (decimal)product.Price);
+                }
+                else if (productType == ProductType.PRODUCT_PLANETICKET)
+                {
+                    commision = 0.1m * (decimal)product.Price;
+                }
+            }
+
+            commision *= amountTravelers;
+
+            return commision;
+        }
+
+        public decimal GetCommisionForCorporate(int amountTravelers, int tripDuration, IList<Product> products)
+        {
+            PackageBl packageBl = new PackageBl();
+            ProductBl productBl = new ProductBl();
+
+            decimal commision = 0;
+
+            foreach (var product in products)
+            {
+                string productType = productBl.GetProductTypeFromId(product.ProductTypeId);
+
+                if (productType == ProductType.PRODUCT_HOTEL)
+                {
+                    commision += (decimal)product.Price * tripDuration;
+                }
+                else if (productType == ProductType.PRODUCT_CAR)
+                {
+                    commision += tripDuration * (decimal)product.Price;
+                }
+                else if (productType == ProductType.PRODUCT_PLANETICKET)
+                {
+                    commision += 2 * (decimal)product.Price;
+                }
+            }
+
+            commision *= amountTravelers * 0.1m;
+
+            return commision;
+        }
+
+        public decimal GetComission(Reservation reservation)
+        {
+            PackageBl packageBl = new PackageBl();
+            ProductBl productBl = new ProductBl();
+
+            decimal commision = 0;
+            Package package = reservation.Package;
+
+            int? clientTypeId = reservation.ClientTypeId;
+            int amountTravelers = reservation.AmountTravelers;
+            int tripDuration = reservation.DurationStay;
             
-            IList<Product> products = packageBl.GetProducts();
 
-            if (clientType == ClientType.CLIENT_COORPORATE)
+            if (clientTypeId == 2) // Coorporate
             {
-                foreach (var product in products)
+                foreach(var packageId in reservation.TravelPackageIds)
                 {
-                    string productType = productBl.GetProductTypeFromId(product.ProductTypeId);
-
-                    if (productType == ProductType.PRODUCT_HOTEL)
-                    {
-                        comission += (decimal)product.Price * reservation.DurationStay;
-                    }
-                    else if (productType == ProductType.PRODUCT_CAR)
-                    {
-                        comission += reservation.DurationStay*(decimal)product.Price;
-                    }
-                    else if (productType == ProductType.PRODUCT_PLANETICKET)
-                    {
-                        comission += 2 * (decimal)product.Price;
-                    }
+                    IList<Product> products = packageBl.GetProducts(packageId);
+                    commision += GetCommisionForCorporate(amountTravelers, tripDuration, products);
                 }
-
-                comission *= reservation.AmountTravelers * 0.1m;
             }
-            else if (clientType == ClientType.CLIENT_INDIVIDUAL)
+            else if (clientTypeId == 1) // Individual
             {
-                foreach (var product in products)
+                foreach (var packageId in reservation.TravelPackageIds)
                 {
-                    string productType = productBl.GetProductTypeFromId(product.ProductTypeId);
-
-                    if (productType == ProductType.PRODUCT_HOTEL)
-                    {
-                        if (reservation.DurationStay < 6)
-                        {
-                            comission += 0.5m * (decimal)product.Price;
-                        }
-                        else
-                        {
-                            comission += (decimal)product.Price;
-                        }
-                    }
-                    else if (productType == ProductType.PRODUCT_CAR)
-                    {
-                        comission += ((decimal)(100*product.Category) + 0.01m * (decimal)product.Price);
-                    }
-                    else if (productType == ProductType.PRODUCT_PLANETICKET) 
-                    {
-                        comission *= 1.1m;
-                    }
+                    IList<Product> products = packageBl.GetProducts(packageId);
+                    commision += GetCommisionForIndividual(amountTravelers, tripDuration, products);
                 }
-
-                comission *= reservation.AmountTravelers;
             }
 
-            return comission;
+            return commision;
         }
     }
 }

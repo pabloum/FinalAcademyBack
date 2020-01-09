@@ -25,11 +25,13 @@ namespace LandingAgency.Api.Models
 
         public int? Category { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PackageProduct> PackageProduct { get; set; }
-
-        public virtual ICollection<Package> Packages { get; set; }
+        public string Description { get; set; }
 
         public virtual ProductType ProductType { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PackageProduct> PackageProduct { get; set; }
+        
+        public virtual ICollection<Package> Packages { get; set; }
     }
 }

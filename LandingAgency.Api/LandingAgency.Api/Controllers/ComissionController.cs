@@ -15,26 +15,19 @@ namespace LandingAgency.Api.Controllers
         [HttpGet]
         public IHttpActionResult Get()
         {
-            var reservation = new Reservation();
-            var comissionBl = new ComissionBl();
+            var reservationBl = new PackageBl();
 
-            return Ok(comissionBl.GetComission(reservation));
+            return Ok(reservationBl.GetAll());
         }
 
         // POST api/comission
         [HttpPost]
-        public void Post([FromBody] Reservation res)
+        public IHttpActionResult Post([FromBody] Reservation reservation)
         {
-            LandingAgencyModel LAM = new LandingAgencyModel();
-            Reservation reservation = new Reservation();
+            ComissionBl comissionBl = new ComissionBl();
+            decimal commision = comissionBl.GetComission(reservation);
 
-            reservation.DurationStay = res.DurationStay;
-            reservation.AmountTravelers = res.AmountTravelers;
-            reservation.Package = res.Package;
-            reservation.Client = res.Client;
-
-            LAM.Reservation.Add(reservation);
-            LAM.SaveChanges();
+            return Ok(commision);
         }
     }
 }

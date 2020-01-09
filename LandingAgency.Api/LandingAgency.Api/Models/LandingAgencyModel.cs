@@ -4,13 +4,14 @@ namespace LandingAgency.Api.Models
     using System.Data.Entity;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
+    using LandingAgency.Api.Logic;
 
     public partial class LandingAgencyModel : DbContext
     {
         public LandingAgencyModel()
             : base("name=LandingAgencyModel")
         {
-            this.Configuration.LazyLoadingEnabled = false; this.Configuration.ProxyCreationEnabled = false;
+            this.Configuration.LazyLoadingEnabled = false; this.Configuration.ProxyCreationEnabled = false;           
         }
 
         public virtual DbSet<Client> Client { get; set; }
@@ -35,14 +36,6 @@ namespace LandingAgency.Api.Models
                 .HasMany(e => e.PackageProduct)
                 .WithRequired(e => e.Package)
                 .WillCascadeOnDelete(false);
-                //.HasMany<Product>(e => e.Products)
-                //.Withmany(e => e.packages)
-                //.map(cs =>
-                //        {
-                //            cs.mapleftkey("packagerefid");
-                //            cs.maprightkey("productrefid");
-                //            cs.totable("packageproduct");
-                //        });
 
             modelBuilder.Entity<Product>()
                 .Property(e => e.Price)

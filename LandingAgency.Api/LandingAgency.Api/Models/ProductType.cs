@@ -9,9 +9,12 @@ namespace LandingAgency.Api.Models
     [Table("ProductType")]
     public partial class ProductType
     {
-        public const string PRODUCT_HOTEL = "Hotel";
-        public const string PRODUCT_CAR = "Car";
-        public const string PRODUCT_PLANETICKET = "Plane Ticket";
+        public enum Type
+        {
+            PRODUCT_HOTEL = 1,
+            PRODUCT_CAR = 2,
+            PRODUCT_PLANETICKET = 3
+        }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ProductType()

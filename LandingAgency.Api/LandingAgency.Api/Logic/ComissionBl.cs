@@ -10,16 +10,11 @@ namespace LandingAgency.Api.Logic
     {
         public decimal GetCommisionForIndividual(int amountTravelers, int tripDuration, IList<Product> products)
         {
-            PackageBl packageBl = new PackageBl();
-            ProductBl productBl = new ProductBl();
-
             decimal commision = 0;
 
             foreach (var product in products)
             {
-                string productType = productBl.GetProductTypeFromId(product.ProductTypeId);
-
-                if (productType == ProductType.PRODUCT_HOTEL)
+                if (product.ProductTypeId == (int?)ProductType.Type.PRODUCT_HOTEL)
                 {
                     if (tripDuration < 6)
                     {
@@ -30,11 +25,11 @@ namespace LandingAgency.Api.Logic
                         commision += (decimal)product.Price;
                     }
                 }
-                else if (productType == ProductType.PRODUCT_CAR)
+                else if (product.ProductTypeId == (int?)ProductType.Type.PRODUCT_CAR)
                 {
                     commision += ((decimal)(100 * product.Category) + 0.01m * (decimal)product.Price);
                 }
-                else if (productType == ProductType.PRODUCT_PLANETICKET)
+                else if (product.ProductTypeId == (int?)ProductType.Type.PRODUCT_PLANETICKET)
                 {
                     commision = 0.1m * (decimal)product.Price;
                 }
@@ -47,24 +42,19 @@ namespace LandingAgency.Api.Logic
 
         public decimal GetCommisionForCorporate(int amountTravelers, int tripDuration, IList<Product> products)
         {
-            PackageBl packageBl = new PackageBl();
-            ProductBl productBl = new ProductBl();
-
             decimal commision = 0;
 
             foreach (var product in products)
             {
-                string productType = productBl.GetProductTypeFromId(product.ProductTypeId);
-
-                if (productType == ProductType.PRODUCT_HOTEL)
+                if (product.ProductTypeId == (int?)ProductType.Type.PRODUCT_HOTEL)
                 {
                     commision += (decimal)product.Price * tripDuration;
                 }
-                else if (productType == ProductType.PRODUCT_CAR)
+                else if (product.ProductTypeId == (int?)ProductType.Type.PRODUCT_CAR)
                 {
-                    commision += tripDuration * (decimal)product.Price;
+                    commision +=  (decimal)product.Price * tripDuration;
                 }
-                else if (productType == ProductType.PRODUCT_PLANETICKET)
+                else if (product.ProductTypeId == (int?)ProductType.Type.PRODUCT_PLANETICKET)
                 {
                     commision += 2 * (decimal)product.Price;
                 }
@@ -78,7 +68,6 @@ namespace LandingAgency.Api.Logic
         public decimal GetComission(Reservation reservation)
         {
             PackageBl packageBl = new PackageBl();
-            ProductBl productBl = new ProductBl();
 
             decimal commision = 0;
             Package package = reservation.Package;
@@ -86,21 +75,17 @@ namespace LandingAgency.Api.Logic
             int? clientTypeId = reservation.ClientTypeId;
             int amountTravelers = reservation.AmountTravelers;
             int tripDuration = reservation.DurationStay;
-            
 
-            if (clientTypeId == 2) // Coorporate
+            foreach (var packageId in reservation.TravelPackageIds)
             {
-                foreach(var packageId in reservation.TravelPackageIds)
+                IList<Product> products = packageBl.GetProducts(packageId);
+
+                if (clientTypeId == 2) // Coorporate
                 {
-                    IList<Product> products = packageBl.GetProducts(packageId);
                     commision += GetCommisionForCorporate(amountTravelers, tripDuration, products);
                 }
-            }
-            else if (clientTypeId == 1) // Individual
-            {
-                foreach (var packageId in reservation.TravelPackageIds)
+                else if (clientTypeId == 1) // Individual
                 {
-                    IList<Product> products = packageBl.GetProducts(packageId);
                     commision += GetCommisionForIndividual(amountTravelers, tripDuration, products);
                 }
             }

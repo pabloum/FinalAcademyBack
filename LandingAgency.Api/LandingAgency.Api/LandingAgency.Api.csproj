@@ -181,7 +181,6 @@
     <Compile Include="Logic\ClientBl.cs" />
     <Compile Include="Logic\ComissionBl.cs" />
     <Compile Include="Logic\PackageBl.cs" />
-    <Compile Include="Logic\ProductBl.cs" />
     <Compile Include="Logic\ReservationBl.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\ClientType.cs" />
